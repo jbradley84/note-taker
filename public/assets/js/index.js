@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 let noteTitle;
 let noteText;
 let saveNoteBtn;
@@ -74,6 +76,24 @@ const handleNoteSave = () => {
   saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
+  });
+  fetch('/api/notes', {
+   method: 'POST',
+   headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(noteObject)
+  })
+  .then(response => {
+   if (response.ok) {
+      return response.json();
+   }
+   alert('Error: ' + response.statusText);
+  })
+  .then(postResponse => {
+   console.log(postResponse);
+   alert('Noted!');
   });
 };
 
