@@ -1,6 +1,14 @@
-[
+{
+  "notes": [
     {
-        "title":"Test Title",
-        "text":"Test text"
+      "id": "0",
+      "title": "Test Title",
+      "text": "Test text"
+    },
+    {
+      "title": "Test POST functionality",
+      "text": "Use Insomnia to test POST functionality",
+      "id": "1"
     }
-]
+  ]
+}
