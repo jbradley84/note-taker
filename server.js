@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { notes } = require('./db/db.json');
 const express = require('express');
-const exp = require('constants');
+//const exp = require('constants');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -45,6 +45,7 @@ function validateNote(note) {
 // API ROUTES
 // get request to RETREIVE NOTES
 app.get('/api/notes', (req, res) => {
+   console.log(notes);
    res.json(notes);
 });
 
@@ -76,7 +77,15 @@ app.post('/api/notes', (req, res) => {
 
 // HTML ROUTES
 app.get('/', (req, res) => {
+   res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/notes', (req, res) => {
    res.sendFile(path.join(__dirname, './public/notes.html'));
+});
+
+app.get('*', (req, res) => {
+   res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.listen(PORT, () => {
