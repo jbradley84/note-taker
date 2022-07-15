@@ -1,12 +1,10 @@
-//const { response } = require("express");
-
 let noteTitle;
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === '/notes') {
+if (window.location.pathname === '/notes.html') {
    noteTitle = document.querySelector('.note-title');
    noteText = document.querySelector('.note-textarea');
    saveNoteBtn = document.querySelector('.save-note');
@@ -35,16 +33,27 @@ const getNotes = () =>
       }
    });
 
-const saveNote = note =>
+const saveNote = (note) =>
    fetch('/api/notes', {
       method: 'POST',
       headers: {
-         'Content-Type': 'application/json'
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(note)
-   });
+      body: JSON.stringify(note),
+   })
+      .then(response => {
+         if (response.ok) {
+            return response.json();
+         }
+         alert('Error: ' + response.statusText);
+      })
+      .then(postResponse => {
+         console.log(postResponse);
+         alert('Thank you for adding a note!');
+      });
 
-const deleteNote = id =>
+const deleteNote = (id) =>
    fetch(`/api/notes/${id}`, {
       method: 'DELETE',
       headers: {
@@ -77,24 +86,7 @@ const handleNoteSave = () => {
       getAndRenderNotes();
       renderActiveNote();
    });
-   fetch('/api/notes', {
-      method: 'POST',
-      headers: {
-         Accept: 'application/json',
-         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(noteObject)
-   })
-      .then(response => {
-         if (response.ok) {
-            return response.json();
-         }
-         alert('Error: ' + response.statusText);
-      })
-      .then(postResponse => {
-         console.log(postResponse);
-         alert('Noted!');
-      });
+   location.reload();
 };
 
 // Delete the clicked note
@@ -137,9 +129,9 @@ const handleRenderSaveBtn = () => {
 };
 
 // Render the list of note titles
-const renderNoteList = async notes => {
+const renderNoteList = async (notes) => {
    let jsonNotes = await notes.json();
-   if (window.location.pathname === '/notes') {
+   if (window.location.pathname === '/notes.html') {
       noteList.forEach(el => (el.innerHTML = ''));
    }
 
@@ -185,7 +177,7 @@ const renderNoteList = async notes => {
       noteListItems.push(li);
    });
 
-   if (window.location.pathname === '/notes') {
+   if (window.location.pathname === '/notes.html') {
       noteListItems.forEach(note => noteList[0].append(note));
    }
 };
@@ -194,7 +186,7 @@ const renderNoteList = async notes => {
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
 
-if (window.location.pathname === '/notes') {
+if (window.location.pathname === '/notes.html') {
    saveNoteBtn.addEventListener('click', handleNoteSave);
    newNoteBtn.addEventListener('click', handleNewNoteView);
    noteTitle.addEventListener('keyup', handleRenderSaveBtn);

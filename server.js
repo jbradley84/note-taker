@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const { notes } = require('./db/db.json');
 const express = require('express');
-//const exp = require('constants');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -49,30 +48,26 @@ app.get('/api/notes', (req, res) => {
    res.json(notes);
 });
 
-// get request to RETRIEVE SINGLE NOTE by ID
-app.get('/api/notes/:id', (req, res) => {
-   const result = findById(req.params.id, notes);
-   if (result) {
-      res.json(result);
-   } else {
-      res.send(404);
-   }
-})
-
-// post request to ADD NEW NOTE
+// post request to PRINT NOTES to page
 app.post('/api/notes', (req, res) => {
-   // set id based on what the next index of the array will be
+   // set NOTE ID
    req.body.id = notes.length.toString();
 
-   // if any data in req.body is incorrect, send 400 error back
+   // validate notes
    if (!validateNote(req.body)) {
-      res.status(400).send('The note is not properly formatted.');
+      res.status(400).send('The note is not properly formatted!');
    } else {
-      // add note to json file and notes array in this function
       const note = createNewNote(req.body, notes);
       res.json(note);
    }
 });
+
+// delete request to DELETE NOTE
+app.delete('api/notes/:id', (req, res) => {
+   const params = req.params.id;
+   deleteNote(params, notes);
+   res.redirect('');
+}); 
 
 
 // HTML ROUTES
