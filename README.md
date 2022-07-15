@@ -5,7 +5,7 @@
 
 A note taking application that allows users to input note Title and Text. Users can save and delete notes.
 
-View the deployed application [here](https://jbradley84.github.io/note-taker/)
+View the deployed application [here](https://note-taker-85246.herokuapp.com/)
 
 ![ScreenShot](./public/assets/images/note-taker_index_screenshot.png)
 ![ScreenShot](./public/assets/images/note-taker_notes_screenshot.png)
